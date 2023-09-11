@@ -3,15 +3,14 @@ package km.com.visao;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import km.com.avltree.AVLTree;
 import km.com.avltree.Tree;
 import km.com.leitura.LeituraArquivo;
-import km.com.visao.ResultadoJFrame;
 
 public class FileChooserJFrame extends javax.swing.JFrame {
 
@@ -42,7 +41,7 @@ public class FileChooserJFrame extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,13 +141,13 @@ public class FileChooserJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
+            .addGap(0, 907, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -192,25 +191,16 @@ public class FileChooserJFrame extends javax.swing.JFrame {
                 System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             }
 
-            LeituraArquivo leitura = new LeituraArquivo();
             AVLTree avltree = new AVLTree();
             Tree tree = new Tree();
-            HashMap<String, Integer> hmap = leitura.leituraDoArquivo(selectedFile.toString());
-
+            HashMap<String, Integer> hmap = LeituraArquivo.leituraDoArquivo(selectedFile.toString());
             for (Map.Entry<String, Integer> m:hmap.entrySet()) {
-                // System.out.println(m.getKey());
                 String word = m.getKey();
                 avltree.insert(word);
                 tree.insert(word);
             }
 
-            //            for(int i = 0; i < arraylist.size(); i++){
-                //                if(arraylist == null) break;
-                //                avltree.insert(arraylist.get(i).toString());
-                //                tree.insert(arraylist.get(i).toString());
-                //            }
-
-            ResultadoJFrame resultadoJFrame = new ResultadoJFrame(avltree, tree);
+            ResultadoJFrame resultadoJFrame = new ResultadoJFrame(avltree, tree, hmap);
             resultadoJFrame.setVisible(true);
             this.setVisible(false);
 
