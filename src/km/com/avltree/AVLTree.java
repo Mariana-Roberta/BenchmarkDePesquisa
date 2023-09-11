@@ -16,12 +16,12 @@ public class AVLTree {
 
         @Override
         public PrintableNode getLeft() {
-            return left;
+            return right;
         }
 
         @Override
         public PrintableNode getRight() {
-            return right;
+            return left;
         }
 
         @Override

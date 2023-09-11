@@ -5,8 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import javax.swing.SpringLayout;
 
 
 public class LeituraArquivo {
@@ -57,6 +60,12 @@ public class LeituraArquivo {
 
         }
         
+        //ARRAYLIST EM ORDEM ALFABÉTICA
+        Collections.sort(lista);
+//        for(int i = 0; i < lista.size(); i++){
+//            System.out.println(lista.get(i).toString());
+//        }
+
         //ADICIONA AS PALAVRAS CONFORME A FREQUÊNCIA E EVITA DUPLICADAS
         HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 
@@ -69,10 +78,11 @@ public class LeituraArquivo {
               hmap.put(lista.get(i).toString(), ++c);
             }
         }
+        
 //        for (Map.Entry<String, Integer> m:hmap.entrySet()) {
 //            System.out.println(m.getKey() + m.getValue());
 //        }
-        
+
        return hmap;      
     }    
 }
