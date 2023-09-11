@@ -5,24 +5,26 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LeituraArquivo {
-    public static void main(String [] args) {
-        try {
-            leituraDoDicionario();
-            System.out.println(leituraDoDicionario());
-        } catch (IOException ex) {
-            Logger.getLogger(LeituraArquivo.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public static ArrayList leituraDoDicionario() throws FileNotFoundException, IOException{
+//    public static void main(String [] args) {
+//        try {
+//            leituraDoArquivo("C:\\Users\\Mariana\\Documents\\Teste.txt");
+//            //System.out.println(leituraDoArquivo("C:\\Users\\Mariana\\Documents\\Teste.txt"));
+//        } catch (IOException ex) {
+//            Logger.getLogger(LeituraArquivo.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+    public static HashMap leituraDoArquivo(String filename) throws FileNotFoundException, IOException{
         ArrayList lista = new ArrayList();
         
         //LÊ ARQUIVO DE TEXTO
-        FileReader fr = new FileReader("./src/km/com/arquivos/Testando.txt");
+        FileReader fr = new FileReader(filename);
         BufferedReader br = new BufferedReader(fr);
 
         //LÊ STOPWORDS
@@ -58,7 +60,24 @@ public class LeituraArquivo {
             }
 
         }
-       return lista;      
+        
+        //ADICIONA AS PALAVRAS CONFORME A FREQUÊNCIA E EVITA DUPLICADAS
+        HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+
+        for (int i = 0; i < lista.size(); i++) {
+            Integer c = hmap.get(lista.get(i).toString());
+
+            if (hmap.get(lista.get(i).toString()) == null) {
+               hmap.put(lista.get(i).toString(), 1);
+            } else {
+              hmap.put(lista.get(i).toString(), ++c);
+            }
+        }
+//        for (Map.Entry<String, Integer> m:hmap.entrySet()) {
+//            System.out.println(m.getKey() + m.getValue());
+//        }
+        
+       return hmap;      
     }    
 }
 
