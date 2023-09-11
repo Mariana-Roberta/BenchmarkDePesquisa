@@ -199,8 +199,9 @@ public class FileChooserJFrame extends javax.swing.JFrame {
 
             for (Map.Entry<String, Integer> m:hmap.entrySet()) {
                 // System.out.println(m.getKey());
-                avltree.insert(m.getKey());
-                tree.insert(m.getKey());
+                String word = m.getKey();
+                avltree.insert(word);
+                tree.insert(word);
             }
 
             //            for(int i = 0; i < arraylist.size(); i++){

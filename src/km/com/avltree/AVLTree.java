@@ -1,8 +1,5 @@
 package km.com.avltree;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import km.com.avltree.TreePrinter.PrintableNode;
 
 public class AVLTree {
@@ -41,7 +38,7 @@ public class AVLTree {
             if (current.key == key) {
                break;
             }
-            current = current.key.charAt(0) < key.charAt(0) ? current.right : current.left;
+            current = current.key.compareTo(key)>0 ? current.right : current.left;
         }
         return current;
     }
@@ -66,9 +63,9 @@ public class AVLTree {
         
         if (node == null) {
             return new Node(key);
-        } else if (node.key.charAt(0) > key.charAt(0)) {
+        } else if (node.key.compareTo(key)<0) {
             node.left = insert(node.left, key);
-        } else if (node.key.charAt(0) < key.charAt(0)) {
+        } else if (node.key.compareTo(key)>0) {
             node.right = insert(node.right, key);
         } else {
             //System.out.println(key);
@@ -80,9 +77,9 @@ public class AVLTree {
     private Node delete(Node node, String key) {
         if (node == null) {
             return node;
-        } else if (node.key.charAt(0) > key.charAt(0)) {
+        } else if (node.key.compareTo(key)<0) {
             node.left = delete(node.left, key);
-        } else if (node.key.charAt(0) < key.charAt(0)) {
+        } else if (node.key.compareTo(key)>0) {
             node.right = delete(node.right, key);
         } else {
             if (node.left == null || node.right == null) {

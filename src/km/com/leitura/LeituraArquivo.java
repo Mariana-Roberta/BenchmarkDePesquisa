@@ -6,10 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class LeituraArquivo {
 //    public static void main(String [] args) {
@@ -42,8 +40,7 @@ public class LeituraArquivo {
                     word = replace;
                 } 
             }      
-            String trim = word.trim();
-            lista.add(trim);
+            lista.add(word.trim());
         }
         
         //VERIFICA AS PALAVRAS QUE SÃO STOPWORDS
@@ -56,7 +53,6 @@ public class LeituraArquivo {
                 if(word.equals(stopword)){
                     lista.remove(word);
                 }
-                String trim = word.trim();
             }
 
         }
