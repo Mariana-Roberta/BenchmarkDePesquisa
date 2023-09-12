@@ -16,12 +16,12 @@ public class AVLTree {
 
         @Override
         public PrintableNode getLeft() {
-            return left;
+            return right;
         }
 
         @Override
         public PrintableNode getRight() {
-            return right;
+            return left;
         }
 
         @Override
@@ -35,10 +35,10 @@ public class AVLTree {
     public Node find(String key) {
         Node current = root;
         while (current != null) {
-            if (current.key == key) {
+            if (current.key.equals(key)) {
                break;
             }
-            current = current.key.compareTo(key)>0 ? current.right : current.left;
+            current = current.key.compareTo(key)> 0 ? current.right : current.left;
         }
         return current;
     }

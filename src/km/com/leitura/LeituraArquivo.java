@@ -10,14 +10,7 @@ import java.util.Scanner;
 
 
 public class LeituraArquivo {
-//    public static void main(String [] args) {
-//        try {
-//            leituraDoArquivo("C:\\Users\\Mariana\\Documents\\Teste.txt");
-//            //System.out.println(leituraDoArquivo("C:\\Users\\Mariana\\Documents\\Teste.txt"));
-//        } catch (IOException ex) {
-//            Logger.getLogger(LeituraArquivo.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+    
     public static HashMap leituraDoArquivo(String filename) throws FileNotFoundException, IOException{
         ArrayList lista = new ArrayList();
         
@@ -56,7 +49,7 @@ public class LeituraArquivo {
             }
 
         }
-        
+
         //ADICIONA AS PALAVRAS CONFORME A FREQUÊNCIA E EVITA DUPLICADAS
         HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 
@@ -69,11 +62,8 @@ public class LeituraArquivo {
               hmap.put(lista.get(i).toString(), ++c);
             }
         }
-//        for (Map.Entry<String, Integer> m:hmap.entrySet()) {
-//            System.out.println(m.getKey() + m.getValue());
-//        }
-        
-       return hmap;      
+
+        return hmap;      
     }    
 }
 
