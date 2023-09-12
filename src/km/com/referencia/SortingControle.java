@@ -2,23 +2,23 @@ package km.com.referencia;
 
 
 public class SortingControle{
-    public static int Particione(String dicionario[], int inicio, int fim){
-        String temp = dicionario[fim];
+    public static int Particione(String word[], int inicio, int fim){
+        String temp = word[fim];
         int i = inicio - 1;
         for(int j = inicio; j < fim; j++){
-            if(dicionario[j].length()<= temp.length()){
+            if(word[j].compareTo(temp)< 0){
                 i++;
-                dicionario[i]=dicionario[j];
+                word[i]=word[j];
             }
         }
-        dicionario[i+1] = dicionario[fim];
+        word[i+1] = word[fim];
         return i+1;
     }
-    public static void QuickSort(String dicionario[],int inicio,int fim)throws Exception{
+    public static void QuickSort(String word[],int inicio,int fim)throws Exception{
         if(inicio<fim){
-            int meio = Particione(dicionario,inicio,fim);
-            QuickSort(dicionario,inicio,meio-1);
-            QuickSort(dicionario,meio+1,fim);
+            int meio = Particione(word,inicio,fim);
+            QuickSort(word,inicio,meio-1);
+            QuickSort(word,meio+1,fim);
         }
     }
 }
