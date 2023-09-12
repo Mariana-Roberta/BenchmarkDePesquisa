@@ -3,7 +3,11 @@ package km.com.visao;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -11,6 +15,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import km.com.avltree.AVLTree;
 import km.com.avltree.Tree;
+import km.com.leitura.Hashmap;
 import km.com.leitura.LeituraArquivo;
 
 public class FileChooserJFrame extends javax.swing.JFrame {
@@ -26,7 +31,6 @@ public class FileChooserJFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jSeparator1 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -35,6 +39,7 @@ public class FileChooserJFrame extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Leitura TXT");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -49,9 +54,7 @@ public class FileChooserJFrame extends javax.swing.JFrame {
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-
-        jSeparator1.setForeground(new java.awt.Color(204, 204, 255));
+        jPanel2.setBackground(new java.awt.Color(219, 233, 238));
 
         jPanel3.setBackground(new java.awt.Color(29, 53, 87));
 
@@ -122,45 +125,37 @@ public class FileChooserJFrame extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(104, Short.MAX_VALUE)
+                .addContainerGap(107, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(106, 106, 106))
+                .addGap(103, 103, 103))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(65, 65, 65)
+                .addGap(127, 127, 127)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addContainerGap(139, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 907, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 486, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, 0)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -189,21 +184,17 @@ public class FileChooserJFrame extends javax.swing.JFrame {
             File selectedFile = null;
             if (result == JFileChooser.APPROVE_OPTION) {
                 selectedFile = fileChooser.getSelectedFile();
-                System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+                //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             }
             ArrayList<String> lista = new ArrayList();
             AVLTree avltree = new AVLTree();
             Tree tree = new Tree();
             lista = LeituraArquivo.leituraDoArquivo(selectedFile.toString());
-//            HashMap<String, Integer> hmap = LeituraArquivo.leituraDoArquivo(selectedFile.toString());
-//            for (Map.Entry<String, Integer> m:hmap.entrySet()) {
-//                String word = m.getKey();
-//                avltree.insert(word);
-//                tree.insert(word);
-//            }
+            HashMap<String, Integer> hmap = Hashmap.criaHashmap(lista);
 
             //Gerando contador da arvore AVL e populando a mesma
             int contadorAvl = 0;
+            Date d1AVL = new Date();
             for(int i=0; i<lista.size();i++){
                 AVLTree.Node node = avltree.find(lista.get(i));
                 if(node == null){
@@ -213,25 +204,32 @@ public class FileChooserJFrame extends javax.swing.JFrame {
                 contadorAvl += node.getContador();
                 }
             }
-            
+            Date d2AVL = new Date();
+            DecimalFormat myDecimalFormatterAVL = new DecimalFormat("###,###.###");
+            String tempoAVL = myDecimalFormatterAVL.format(((double)d2AVL.getTime()-d1AVL.getTime())/1000);
+
             //Gerando contador da arvore binaria e populando a mesma
             int contadorArvore = 0;
+            Date d1Binaria = new Date();
             for(int i=0; i<lista.size();i++){
                 Tree.Node node = tree.find(lista.get(i));
                 if(node == null){
                     tree.insert(lista.get(i));
                     contadorArvore += tree.getRoot().getContador();
                 }else{
-                contadorArvore += + node.getContador();
+                contadorArvore +=  node.getContador();
                 }
             }
+            Date d2Binaria = new Date();
+            DecimalFormat myDecimalFormatterBinaria = new DecimalFormat("###,###.###");
+            String tempoBinaria = myDecimalFormatterBinaria.format(((double)d2Binaria.getTime()-d1Binaria.getTime())/1000);
             
             //teste de contador
-            System.out.println("AVL: "+contadorAvl + " Binaria: "+ contadorArvore);
-            
-            ResultadoJFrame resultadoJFrame = new ResultadoJFrame(avltree, tree/*, hmap*/);
+            //System.out.println("AVL: "+contadorAvl + " Binaria: "+ contadorArvore);
+            Collections.sort(lista);
+            ResultadoJFrame resultadoJFrame = new ResultadoJFrame(lista, avltree, tree, hmap,
+                    contadorAvl, contadorArvore, tempoAVL, tempoBinaria/*, hmap*/);
             resultadoJFrame.setVisible(true);
-            this.setVisible(false);
 
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -255,6 +253,5 @@ public class FileChooserJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

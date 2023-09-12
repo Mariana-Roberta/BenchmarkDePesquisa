@@ -1,5 +1,6 @@
 package km.com.visao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -7,37 +8,52 @@ import km.com.avltree.AVLTree;
 import km.com.avltree.Tree;
 import km.com.avltree.TreePrinter;
 import km.com.avltree.TreePrinter.PrintableNode;
+import km.com.leitura.BuscaBinaria;
 
 public class ResultadoJFrame extends javax.swing.JFrame {
 
     public ResultadoJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         jTextAreaAVLTree.setEditable(false);
         jTextAreaTree.setEditable(false);
         jTextAreaDesempenho.setEditable(false);
     }
     
-    public ResultadoJFrame(AVLTree avltree, Tree tree/*, HashMap hmap*/) {
+    public ResultadoJFrame(ArrayList lista,AVLTree avltree, Tree tree, HashMap hmap, int contadorAVL, int contadorBinaria, String tempoAVL, String tempoBinaria/*, HashMap hmap*/) {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
         jTextAreaAVLTree.setEditable(false);
         jTextAreaTree.setEditable(false);
         jTextAreaDesempenho.setEditable(false);
         
+        //IMPRIME AS ÁRVORES
         TreePrinter.print((PrintableNode) avltree.getRoot());
         jTextAreaAVLTree.setText(TreePrinter.print((PrintableNode) avltree.getRoot()));
         TreePrinter.print((PrintableNode) tree.getRoot());
         jTextAreaTree.setText(TreePrinter.print((PrintableNode) tree.getRoot()));
         
-//        jTextAreaDesempenho.append("frequencia das palavras: \n");
-//        Map<String, Integer> mapaOrdenado = new TreeMap<String, Integer>(hmap);
-//        for (Map.Entry<String, Integer> m:mapaOrdenado.entrySet()) {
-//            jTextAreaDesempenho.append(m.getKey() + ": " + m.getValue() + "\n");
-//        }
-        AVLTree test = avltree;
-        System.out.println(test.find("estrutura").getText());
+        //TESTE COM BUSCA BINÁRIA
+        System.out.println(BuscaBinaria.buscaBin(lista, "eficiência", 0, lista.size()-1));
+
+        //IMPRIME AS COMPARAÇÕES E O DESEMPENHO
+        jTextAreaDesempenho.append("arvore avl: \n");
+        jTextAreaDesempenho.append("    comparações: " + contadorAVL + "\n");
+        jTextAreaDesempenho.append("    " + tempoAVL + " segundos\n\n");
+        jTextAreaDesempenho.append("arvore binaria: \n");
+        jTextAreaDesempenho.append("    comparações: " + contadorBinaria + "\n");
+        jTextAreaDesempenho.append("    " + tempoBinaria + " segundos\n\n");
+        jTextAreaDesempenho.append("pesquisa binaria: \n");
+        jTextAreaDesempenho.append("    comparações: " + "\n");
+        jTextAreaDesempenho.append("    " + " segundos\n\n");
+        jTextAreaDesempenho.append("frequencia das palavras: \n");
+        Map<String, Integer> mapaOrdenado = new TreeMap<String, Integer>(hmap);
+        for (Map.Entry<String, Integer> m:mapaOrdenado.entrySet()) {
+            jTextAreaDesempenho.append(m.getKey() + ": " + m.getValue() + "\n");
+        }
     }
 
     @SuppressWarnings("unchecked")
