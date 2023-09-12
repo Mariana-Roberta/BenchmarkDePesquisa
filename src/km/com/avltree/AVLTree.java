@@ -5,6 +5,7 @@ import km.com.avltree.TreePrinter.PrintableNode;
 public class AVLTree {
 	
 	public class Node implements PrintableNode {
+            int contador = 0;
 	    String key;
 	    int height;
 	    Node left;
@@ -13,7 +14,10 @@ public class AVLTree {
 	    Node(String key) {
 	        this.key = key;
 	    }
-
+        public int getContador(){
+            return contador;
+        }
+        
         @Override
         public PrintableNode getLeft() {
             return right;
@@ -35,6 +39,7 @@ public class AVLTree {
     public Node find(String key) {
         Node current = root;
         while (current != null) {
+            current.contador++;
             if (current.key.equals(key)) {
                break;
             }
@@ -60,16 +65,16 @@ public class AVLTree {
     }
 
     private Node insert(Node node, String key) {
-        
         if (node == null) {
-            return new Node(key);
+            Node n = new Node(key);
+            n.contador++;
+            return n;
         } else if (node.key.compareTo(key)<0) {
+            node.contador++;
             node.left = insert(node.left, key);
         } else if (node.key.compareTo(key)>0) {
+            node.contador++;
             node.right = insert(node.right, key);
-        } else {
-            //System.out.println(key);
-            throw new RuntimeException("duplicate Key!");
         }
         return rebalance(node);
     }

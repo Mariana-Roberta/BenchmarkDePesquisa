@@ -14,15 +14,5 @@ public class BuscaControle{
         else if (palavra.compareTo(lista.get(meio))<0)
             return (buscaBinaria (lista, palavra, inicio, meio-1));
         else return (buscaBinaria(lista, palavra, meio+1, fim));
-}
-    
-    public static boolean buscaSequencial(ArrayList<String> lista, String palavra) {
-        
-        for(String palavraLista : lista) {
-            if(palavra.toLowerCase().equals(palavraLista.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
     }
 }

@@ -3,6 +3,7 @@ package km.com.visao;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -190,17 +191,45 @@ public class FileChooserJFrame extends javax.swing.JFrame {
                 selectedFile = fileChooser.getSelectedFile();
                 System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             }
-
+            ArrayList<String> lista = new ArrayList();
             AVLTree avltree = new AVLTree();
             Tree tree = new Tree();
-            HashMap<String, Integer> hmap = LeituraArquivo.leituraDoArquivo(selectedFile.toString());
-            for (Map.Entry<String, Integer> m:hmap.entrySet()) {
-                String word = m.getKey();
-                avltree.insert(word);
-                tree.insert(word);
-            }
+            lista = LeituraArquivo.leituraDoArquivo(selectedFile.toString());
+//            HashMap<String, Integer> hmap = LeituraArquivo.leituraDoArquivo(selectedFile.toString());
+//            for (Map.Entry<String, Integer> m:hmap.entrySet()) {
+//                String word = m.getKey();
+//                avltree.insert(word);
+//                tree.insert(word);
+//            }
 
-            ResultadoJFrame resultadoJFrame = new ResultadoJFrame(avltree, tree, hmap);
+            //Gerando contador da arvore AVL e populando a mesma
+            int contadorAvl = 0;
+            for(int i=0; i<lista.size();i++){
+                AVLTree.Node node = avltree.find(lista.get(i));
+                if(node == null){
+                    avltree.insert(lista.get(i));
+                    contadorAvl += avltree.getRoot().getContador();
+                }else{
+                contadorAvl += node.getContador();
+                }
+            }
+            
+            //Gerando contador da arvore binaria e populando a mesma
+            int contadorArvore = 0;
+            for(int i=0; i<lista.size();i++){
+                Tree.Node node = tree.find(lista.get(i));
+                if(node == null){
+                    tree.insert(lista.get(i));
+                    contadorArvore += tree.getRoot().getContador();
+                }else{
+                contadorArvore += + node.getContador();
+                }
+            }
+            
+            //teste de contador
+            System.out.println("AVL: "+contadorAvl + " Binaria: "+ contadorArvore);
+            
+            ResultadoJFrame resultadoJFrame = new ResultadoJFrame(avltree, tree/*, hmap*/);
             resultadoJFrame.setVisible(true);
             this.setVisible(false);
 

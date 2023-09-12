@@ -18,7 +18,7 @@ public class ResultadoJFrame extends javax.swing.JFrame {
         jTextAreaDesempenho.setEditable(false);
     }
     
-    public ResultadoJFrame(AVLTree avltree, Tree tree, HashMap hmap) {
+    public ResultadoJFrame(AVLTree avltree, Tree tree/*, HashMap hmap*/) {
         initComponents();
         this.setLocationRelativeTo(null);
         
@@ -31,11 +31,11 @@ public class ResultadoJFrame extends javax.swing.JFrame {
         TreePrinter.print((PrintableNode) tree.getRoot());
         jTextAreaTree.setText(TreePrinter.print((PrintableNode) tree.getRoot()));
         
-        jTextAreaDesempenho.append("frequencia das palavras: \n");
-        Map<String, Integer> mapaOrdenado = new TreeMap<String, Integer>(hmap);
-        for (Map.Entry<String, Integer> m:mapaOrdenado.entrySet()) {
-            jTextAreaDesempenho.append(m.getKey() + ": " + m.getValue() + "\n");
-        }
+//        jTextAreaDesempenho.append("frequencia das palavras: \n");
+//        Map<String, Integer> mapaOrdenado = new TreeMap<String, Integer>(hmap);
+//        for (Map.Entry<String, Integer> m:mapaOrdenado.entrySet()) {
+//            jTextAreaDesempenho.append(m.getKey() + ": " + m.getValue() + "\n");
+//        }
         AVLTree test = avltree;
         System.out.println(test.find("estrutura").getText());
     }
