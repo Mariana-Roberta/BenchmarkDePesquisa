@@ -15,6 +15,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import km.com.avltree.AVLTree;
 import km.com.avltree.Tree;
+import km.com.leitura.BuscaBinaria;
 import km.com.leitura.Hashmap;
 import km.com.leitura.LeituraArquivo;
 
@@ -187,48 +188,56 @@ public class FileChooserJFrame extends javax.swing.JFrame {
                 //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             }
             ArrayList<String> lista = new ArrayList();
+            ArrayList<String> listaBinaria = new ArrayList();
             AVLTree avltree = new AVLTree();
             Tree tree = new Tree();
+            BuscaBinaria buscaBi = new BuscaBinaria();
             lista = LeituraArquivo.leituraDoArquivo(selectedFile.toString());
             HashMap<String, Integer> hmap = Hashmap.criaHashmap(lista);
-
+ 
+            //Gerando contador da busca binaria e populando a lista vetor binario
+            long tempoB = System.nanoTime();
+            for(int i = 0; i < lista.size(); i++){
+                String palavra = lista.get(i);
+                if(!buscaBi.buscaBin(listaBinaria, palavra, 0, listaBinaria.size()-1)){
+                    listaBinaria.add(palavra);
+                    buscaBi.InsertionSort(listaBinaria);
+                }
+            }            
+            long tempoB2 = System.nanoTime();
+            //contador da busca binaria
+            int contadorBinario = buscaBi.getContador();
+            long tempoBuscaBi = tempoB2-tempoB;
+            
             //Gerando contador da arvore AVL e populando a mesma
             int contadorAvl = 0;
-            Date d1AVL = new Date();
+            long tempoAvl = System.nanoTime();
             for(int i=0; i<lista.size();i++){
-                AVLTree.Node node = avltree.find(lista.get(i));
-                if(node == null){
-                    avltree.insert(lista.get(i));
-                    contadorAvl += avltree.getRoot().getContador();
-                }else{
-                contadorAvl += node.getContador();
+                String palavra = lista.get(i);
+                if(avltree.find(palavra) == null){
+                    avltree.insert(palavra);
                 }
             }
-            Date d2AVL = new Date();
-            DecimalFormat myDecimalFormatterAVL = new DecimalFormat("###,###.###");
-            String tempoAVL = myDecimalFormatterAVL.format(((double)d2AVL.getTime()-d1AVL.getTime())/1000);
+            long tempoAvl2 = System.nanoTime();
+            contadorAvl = avltree.getContador();
+            long tempoAVL = tempoAvl2-tempoAvl;
+
 
             //Gerando contador da arvore binaria e populando a mesma
             int contadorArvore = 0;
-            Date d1Binaria = new Date();
+            long tempoArvore = System.nanoTime();
             for(int i=0; i<lista.size();i++){
-                Tree.Node node = tree.find(lista.get(i));
-                if(node == null){
-                    tree.insert(lista.get(i));
-                    contadorArvore += tree.getRoot().getContador();
-                }else{
-                contadorArvore +=  node.getContador();
+                String palavra = lista.get(i);
+                if(tree.find(palavra) == null){
+                    tree.insert(palavra);
                 }
             }
-            Date d2Binaria = new Date();
-            DecimalFormat myDecimalFormatterBinaria = new DecimalFormat("###,###.###");
-            String tempoBinaria = myDecimalFormatterBinaria.format(((double)d2Binaria.getTime()-d1Binaria.getTime())/1000);
+            long tempoArvore2 = System.nanoTime();
+            contadorArvore +=  tree.getContador();
+            long tempoBinaria = tempoArvore2 - tempoArvore;
             
-            //teste de contador
-            //System.out.println("AVL: "+contadorAvl + " Binaria: "+ contadorArvore);
-            Collections.sort(lista);
             ResultadoJFrame resultadoJFrame = new ResultadoJFrame(lista, avltree, tree, hmap,
-                    contadorAvl, contadorArvore, tempoAVL, tempoBinaria/*, hmap*/);
+                    contadorAvl, contadorArvore, contadorBinario, tempoAVL, tempoBinaria, tempoBuscaBi/*, hmap*/);
             resultadoJFrame.setVisible(true);
 
         } catch (IOException ex) {
