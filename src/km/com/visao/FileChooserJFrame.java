@@ -160,7 +160,7 @@ public class FileChooserJFrame extends javax.swing.JFrame {
         try {
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setPreferredSize(new Dimension(800,600));
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            fileChooser.setCurrentDirectory(new File(".\\src\\km\\com\\arquivos"));
             fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             fileChooser.setAcceptAllFileFilterUsed(false);
             fileChooser.addChoosableFileFilter(new javax.swing.filechooser.FileFilter(){
@@ -179,7 +179,6 @@ public class FileChooserJFrame extends javax.swing.JFrame {
             File selectedFile = null;
             if (result == JFileChooser.APPROVE_OPTION) {
                 selectedFile = fileChooser.getSelectedFile();
-                //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
             }
             ArrayList<String> lista = new ArrayList();
             ArrayList<String> listaBinaria = new ArrayList();
@@ -231,7 +230,7 @@ public class FileChooserJFrame extends javax.swing.JFrame {
             long tempoBinaria = tempoArvore2 - tempoArvore;
             
             ResultadoJFrame resultadoJFrame = new ResultadoJFrame(lista, avltree, tree, hmap,
-                    contadorAvl, contadorArvore, contadorBinario, tempoAVL, tempoBinaria, tempoBuscaBi/*, hmap*/);
+                    contadorAvl, contadorArvore, contadorBinario, tempoAVL, tempoBinaria, tempoBuscaBi);
             resultadoJFrame.setVisible(true);
 
         } catch (IOException ex) {

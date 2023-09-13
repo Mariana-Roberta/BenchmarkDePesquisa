@@ -26,7 +26,7 @@ public class LeituraArquivo {
         return false;
     }
     
-    public static /*HashMap*/ ArrayList leituraDoArquivo(String filename) throws FileNotFoundException, IOException{
+    public static ArrayList leituraDoArquivo(String filename) throws FileNotFoundException, IOException{
         ArrayList lista = new ArrayList();
         
         //LÊ ARQUIVO DE TEXTO
@@ -48,20 +48,6 @@ public class LeituraArquivo {
                 lista.add(word.trim());
             }
         }
-        
-        //ADICIONA AS PALAVRAS CONFORME A FREQUÊNCIA E EVITA DUPLICADAS
-//        HashMap<String, Integer> hmap = new HashMap<String, Integer>();
-//
-//        for (int i = 0; i < lista.size(); i++) {
-//            Integer c = hmap.get(lista.get(i).toString());
-//
-//            if (hmap.get(lista.get(i).toString()) == null) {
-//               hmap.put(lista.get(i).toString(), 1);
-//            } else {
-//              hmap.put(lista.get(i).toString(), ++c);
-//            }
-//        }
-
         return lista;      
     }    
 }

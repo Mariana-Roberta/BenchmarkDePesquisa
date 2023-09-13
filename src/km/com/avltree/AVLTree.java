@@ -86,15 +86,13 @@ public class AVLTree {
     }
 
     private Node insert(Node node, String key) {
+        contador++;
         if (node == null) {
             Node n = new Node(key);
-            contador++;
             return n;
         } else if (node.key.compareTo(key)>0) {
-            contador++;
             node.left = insert(node.left, key);
         } else if (node.key.compareTo(key)<0) {
-            contador++;
             node.right = insert(node.right, key);
         }
         return rebalance(node);
@@ -133,6 +131,7 @@ public class AVLTree {
 
     private Node rebalance(Node z) {
         updateHeight(z);
+        contador++;
         int balance = getBalance(z);
         if (balance > 1) {
             if (height(z.right.right) > height(z.right.left)) {
@@ -183,53 +182,4 @@ public class AVLTree {
     public int getBalance(Node n) {
         return (n == null) ? 0 : height(n.right) - height(n.left);
     }
-    
-//    public String printAVLTree(Node node, String indent, boolean last) {
-//        StringBuilder treeString = new StringBuilder();
-//        if (node != null) {
-//            treeString.append(indent);
-//            if (last) {
-//                treeString.append("└─");
-//                indent += "  ";
-//            } else {
-//                treeString.append("├─");
-//                indent += "│ ";
-//            }
-//            treeString.append(node.key).append("\n");
-//
-//            String leftTree = printAVLTree(node.left, indent, false);
-//            String rightTree = printAVLTree(node.right, indent, true);
-//        
-//            treeString.append(leftTree).append(rightTree);
-//        }
-//         return treeString.toString();
-//    }
-//
-//    
-//    public String printAVLTree() {
-//    	return printAVLTree(root, "", true);
-//    }
-    
-//    public void printAVLTree(Node node, String indent, boolean last) {
-//        if (node != null) {
-//            System.out.print(indent);
-//            if (last) {
-//                System.out.print("└─");
-//                indent += "  ";
-//            } else {
-//                System.out.print("├─");
-//                indent += "│ ";
-//            }
-//            System.out.println(node.key);
-//
-//            printAVLTree(node.left, indent, false);
-//            printAVLTree(node.right, indent, true);
-//        }
-//    }
-//
-//    
-//    public void printAVLTree() {
-//    	printAVLTree(root, "", true);
-//    }
-
 }

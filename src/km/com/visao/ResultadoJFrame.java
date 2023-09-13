@@ -18,7 +18,8 @@ public class ResultadoJFrame extends javax.swing.JFrame {
         jTextAreaDesempenho.setEditable(false);
     }
     
-    public ResultadoJFrame(ArrayList lista,AVLTree avltree, Tree tree, HashMap hmap, int contadorAVL, int contadorArvore, int contadorBinario, long tempoAVL, long tempoBinaria, long tempoBuscaBi/*, HashMap hmap*/) {
+    public ResultadoJFrame(ArrayList lista,AVLTree avltree, Tree tree, HashMap hmap, int contadorAVL,
+            int contadorArvore, int contadorBinario, long tempoAVL, long tempoBinaria, long tempoBuscaBi) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

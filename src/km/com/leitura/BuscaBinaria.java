@@ -45,36 +45,4 @@ public class BuscaBinaria {
             lista.set(j, v);
         }
     }
-    
-//    public static boolean buscaBin(String vetor[], String palavra, int inicio, int fim){
-//        int meio;
-//        if(inicio > fim){
-//            System.out.println("A palavra não existe.");
-//            return false;
-//        }
-//        meio = (inicio + fim) / 2;
-//        if(palavra.matches(vetor[meio])){
-//            System.out.println("A palavra existe.");
-//            return true;
-//        }
-//        else if (palavra.length() < vetor[meio].length()){
-//            return (buscaBin(vetor, palavra, inicio, meio-1));
-//        }
-//        else {
-//            if(palavra.length() == vetor[meio].length()){
-//                for(int i = meio; vetor[i].length() == vetor[meio].length(); i++){  
-//                    if(palavra.matches(vetor[i])){
-//                        return true;
-//                    }
-//                }
-//                for(int i = meio; vetor[i].length() == vetor[meio].length(); i--){  
-//                    if(palavra.matches(vetor[i])){
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
-//            return (buscaBin(vetor, palavra, meio+1, fim));
-//        }
-//    }
 }
