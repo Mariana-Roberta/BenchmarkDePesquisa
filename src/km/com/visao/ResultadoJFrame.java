@@ -21,7 +21,7 @@ public class ResultadoJFrame extends javax.swing.JFrame {
         jTextAreaDesempenho.setEditable(false);
     }
     
-    public ResultadoJFrame(ArrayList lista,AVLTree avltree, Tree tree, HashMap hmap, int contadorAVL, int contadorBinaria, String tempoAVL, String tempoBinaria/*, HashMap hmap*/) {
+    public ResultadoJFrame(ArrayList lista,AVLTree avltree, Tree tree, HashMap hmap, int contadorAVL, int contadorArvore, int contadorBinario, long tempoAVL, long tempoBinaria, long tempoBuscaBi/*, HashMap hmap*/) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -37,18 +37,18 @@ public class ResultadoJFrame extends javax.swing.JFrame {
         jTextAreaTree.setText(TreePrinter.print((PrintableNode) tree.getRoot()));
         
         //TESTE COM BUSCA BINÁRIA
-        System.out.println(BuscaBinaria.buscaBin(lista, "eficiência", 0, lista.size()-1));
+        //System.out.println(BuscaBinaria.buscaBin(lista, "eficiência", 0, lista.size()-1));
 
         //IMPRIME AS COMPARAÇÕES E O DESEMPENHO
         jTextAreaDesempenho.append("arvore avl: \n");
         jTextAreaDesempenho.append("    comparações: " + contadorAVL + "\n");
-        jTextAreaDesempenho.append("    " + tempoAVL + " segundos\n\n");
+        jTextAreaDesempenho.append("    " + tempoAVL + " nano segundos\n\n");
         jTextAreaDesempenho.append("arvore binaria: \n");
-        jTextAreaDesempenho.append("    comparações: " + contadorBinaria + "\n");
-        jTextAreaDesempenho.append("    " + tempoBinaria + " segundos\n\n");
+        jTextAreaDesempenho.append("    comparações: " + contadorArvore + "\n");
+        jTextAreaDesempenho.append("    " + tempoBinaria + " nano segundos\n\n");
         jTextAreaDesempenho.append("pesquisa binaria: \n");
-        jTextAreaDesempenho.append("    comparações: " + "\n");
-        jTextAreaDesempenho.append("    " + " segundos\n\n");
+        jTextAreaDesempenho.append("    comparações: " + contadorBinario +"\n");
+        jTextAreaDesempenho.append("    " + tempoBuscaBi +" nano segundos\n\n");
         jTextAreaDesempenho.append("frequencia das palavras: \n");
         Map<String, Integer> mapaOrdenado = new TreeMap<String, Integer>(hmap);
         for (Map.Entry<String, Integer> m:mapaOrdenado.entrySet()) {

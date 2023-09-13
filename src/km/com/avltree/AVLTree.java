@@ -5,7 +5,7 @@ import km.com.avltree.TreePrinter.PrintableNode;
 public class AVLTree {
 	
 	public class Node implements PrintableNode {
-            int contador = 0;
+
 	    String key;
 	    int height;
 	    Node left;
@@ -14,18 +14,15 @@ public class AVLTree {
 	    Node(String key) {
 	        this.key = key;
 	    }
-        public int getContador(){
-            return contador;
-        }
         
         @Override
         public PrintableNode getLeft() {
-            return right;
+            return left;
         }
 
         @Override
         public PrintableNode getRight() {
-            return left;
+            return right;
         }
 
         @Override
@@ -35,15 +32,24 @@ public class AVLTree {
 	}
 
     private Node root;
+    int contador = 0;
+    
+    public int getContador(){
+        return contador;
+    }
 
+    public void setContador(int contador){
+        this.contador = contador;
+    }
+    
     public Node find(String key) {
         Node current = root;
         while (current != null) {
-            current.contador++;
+            contador++;
             if (current.key.equals(key)) {
                break;
             }
-            current = current.key.compareTo(key)> 0 ? current.right : current.left;
+            current = current.key.compareTo(key)< 0 ? current.right : current.left;
         }
         return current;
     }
@@ -67,13 +73,13 @@ public class AVLTree {
     private Node insert(Node node, String key) {
         if (node == null) {
             Node n = new Node(key);
-            n.contador++;
+            contador++;
             return n;
-        } else if (node.key.compareTo(key)<0) {
-            node.contador++;
-            node.left = insert(node.left, key);
         } else if (node.key.compareTo(key)>0) {
-            node.contador++;
+            contador++;
+            node.left = insert(node.left, key);
+        } else if (node.key.compareTo(key)<0) {
+            contador++;
             node.right = insert(node.right, key);
         }
         return rebalance(node);
@@ -82,9 +88,9 @@ public class AVLTree {
     private Node delete(Node node, String key) {
         if (node == null) {
             return node;
-        } else if (node.key.compareTo(key)<0) {
-            node.left = delete(node.left, key);
         } else if (node.key.compareTo(key)>0) {
+            node.left = delete(node.left, key);
+        } else if (node.key.compareTo(key)<0) {
             node.right = delete(node.right, key);
         } else {
             if (node.left == null || node.right == null) {
