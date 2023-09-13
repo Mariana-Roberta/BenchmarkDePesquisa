@@ -1,35 +1,50 @@
 package km.com.avltree;
 
-import km.com.avltree.TreePrinter.PrintableNode;
-
 public class AVLTree {
 	
-	public class Node implements PrintableNode {
+    public class Node {
 
-	    String key;
-	    int height;
-	    Node left;
-	    Node right;
+        String key;
+        int height;
+        Node left;
+        Node right;
 
-	    Node(String key) {
-	        this.key = key;
-	    }
+        Node(String key) {
+            this.key = key;
+        }
         
-        @Override
-        public PrintableNode getLeft() {
-            return left;
+        //IMPRIME A ÁRVORE
+        public String buildAVLTreeString() {
+            StringBuilder treeString = new StringBuilder();
+            buildAVLTreeString(treeString, true, "");
+            return treeString.toString();
+        }   
+
+        private void buildAVLTreeString(StringBuilder treeString, boolean isRight, String indent) {
+            if (right != null) {
+                right.buildAVLTreeString(treeString, true, indent + (isRight ? "        " : " |      "));
+            }
+            treeString.append(indent);
+            if (isRight) {
+                treeString.append(" /");
+            } else {
+                treeString.append(" \\");
+            }
+            treeString.append("----- ");
+            appendNodeValue(treeString);
+            if (left != null) {
+                left.buildAVLTreeString(treeString, false, indent + (isRight ? " |      " : "        "));
+            }
         }
 
-        @Override
-        public PrintableNode getRight() {
-            return right;
+        private void appendNodeValue(StringBuilder treeString) {
+            if (key == null) {
+                treeString.append("<null>\n");
+            } else {
+                treeString.append(key).append('\n');
+            }
         }
-
-        @Override
-        public String getText() {
-            return key;
-        }
-	}
+    }
 
     private Node root;
     int contador = 0;
@@ -169,25 +184,52 @@ public class AVLTree {
         return (n == null) ? 0 : height(n.right) - height(n.left);
     }
     
-    public void printAVLTree(Node node, String indent, boolean last) {
-        if (node != null) {
-            System.out.print(indent);
-            if (last) {
-                System.out.print("└─");
-                indent += "  ";
-            } else {
-                System.out.print("├─");
-                indent += "│ ";
-            }
-            System.out.println(node.key);
-
-            printAVLTree(node.left, indent, false);
-            printAVLTree(node.right, indent, true);
-        }
-    }
-
+//    public String printAVLTree(Node node, String indent, boolean last) {
+//        StringBuilder treeString = new StringBuilder();
+//        if (node != null) {
+//            treeString.append(indent);
+//            if (last) {
+//                treeString.append("└─");
+//                indent += "  ";
+//            } else {
+//                treeString.append("├─");
+//                indent += "│ ";
+//            }
+//            treeString.append(node.key).append("\n");
+//
+//            String leftTree = printAVLTree(node.left, indent, false);
+//            String rightTree = printAVLTree(node.right, indent, true);
+//        
+//            treeString.append(leftTree).append(rightTree);
+//        }
+//         return treeString.toString();
+//    }
+//
+//    
+//    public String printAVLTree() {
+//    	return printAVLTree(root, "", true);
+//    }
     
-    public void printAVLTree() {
-    	printAVLTree(root, "", true);
-    }
+//    public void printAVLTree(Node node, String indent, boolean last) {
+//        if (node != null) {
+//            System.out.print(indent);
+//            if (last) {
+//                System.out.print("└─");
+//                indent += "  ";
+//            } else {
+//                System.out.print("├─");
+//                indent += "│ ";
+//            }
+//            System.out.println(node.key);
+//
+//            printAVLTree(node.left, indent, false);
+//            printAVLTree(node.right, indent, true);
+//        }
+//    }
+//
+//    
+//    public void printAVLTree() {
+//    	printAVLTree(root, "", true);
+//    }
+
 }

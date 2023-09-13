@@ -1,12 +1,10 @@
 package km.com.avltree;
 
-import java.util.HashSet;
-import java.util.Set;
 import km.com.avltree.TreePrinter.PrintableNode;
 
 public class Tree {
 	
-    public class Node implements PrintableNode {
+    public class Node {
         String key;
         int height;
         Node left;
@@ -16,20 +14,36 @@ public class Tree {
             this.key = key;
         }
 
-        
-        @Override
-        public PrintableNode getLeft() {
-            return left;
+        //IMPRIME A ÁRVORE
+        public String buildTreeString() {
+            StringBuilder treeString = new StringBuilder();
+            buildTreeString(treeString, true, "");
+            return treeString.toString();
+        }   
+
+        private void buildTreeString(StringBuilder treeString, boolean isRight, String indent) {
+            if (right != null) {
+                right.buildTreeString(treeString, true, indent + (isRight ? "        " : " |      "));
+            }
+            treeString.append(indent);
+            if (isRight) {
+                treeString.append(" /");
+            } else {
+                treeString.append(" \\");
+            }
+            treeString.append("----- ");
+            appendNodeValue(treeString);
+            if (left != null) {
+                left.buildTreeString(treeString, false, indent + (isRight ? " |      " : "        "));
+            }
         }
 
-        @Override
-        public PrintableNode getRight() {
-            return right;
-        }
-
-        @Override
-        public String getText() {
-            return key;
+        private void appendNodeValue(StringBuilder treeString) {
+            if (key == null) {
+                treeString.append("<null>\n");
+            } else {
+                treeString.append(key).append('\n');
+            }
         }
     }
 
@@ -115,6 +129,31 @@ public class Tree {
         return current;
     }
 
+//        public String printTree(Node node, String indent, boolean last) {
+//        StringBuilder treeString = new StringBuilder();
+//        if (node != null) {
+//            treeString.append(indent);
+//            if (last) {
+//                treeString.append("└─");
+//                indent += "  ";
+//            } else {
+//                treeString.append("├─");
+//                indent += "│ ";
+//            }
+//            treeString.append(node.key).append("\n");
+//
+//            String leftTree = printTree(node.left, indent, false);
+//            String rightTree = printTree(node.right, indent, true);
+//        
+//            treeString.append(leftTree).append(rightTree);
+//        }
+//         return treeString.toString();
+//    }
+//
+//    
+//    public String printTree() {
+//    	return printTree(root, "", true);
+//    }
 //    private Node rebalance(Node z) {
 //        updateHeight(z);
 //        int balance = getBalance(z);
