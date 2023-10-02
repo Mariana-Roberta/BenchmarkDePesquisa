@@ -1,6 +1,0 @@
-Coloque contadores no seu programa para determinar o número de comparações de
-chaves e atribuições de registros necessárias para montar a tabela de frequências em
-cada uma das estruturas acima. Conte apenas o número de comparações para montar
-a estrutura (operações de inserir e pesquisar). Você não deve considerar as operações
-na fase de impressão ordenada. Calcule também o tempo que cada estrutura leva apara
-montar a tabela. Analise, por meio dos dados coletados, a eficiência de cada estrutura.
