@@ -1,0 +1,26 @@
+-d
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\build\\classes
+-classpath
+"C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\build\\classes;C:\\Program Files\\NetBeans-15\\netbeans\\java\\modules\\ext\\AbsoluteLayout.jar"
+-sourcepath
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\build\\empty
+-target
+17
+-encoding
+UTF-8
+-g
+-processorpath
+"C:\\Program Files\\NetBeans-15\\netbeans\\java\\modules\\ext\\AbsoluteLayout.jar;C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\build\\empty"
+-s
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\build\\generated-sources\\ap-source-output
+-source
+17
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\src\\km\\com\\avltree\\AVLTree.java
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\src\\km\\com\\avltree\\RedBlackTree.java
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\src\\km\\com\\avltree\\Tree.java
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\src\\km\\com\\avltree\\TreePrinter.java
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\src\\km\\com\\leitura\\BuscaBinaria.java
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\src\\km\\com\\leitura\\Hashmap.java
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\src\\km\\com\\leitura\\LeituraArquivo.java
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\src\\km\\com\\visao\\FileChooserJFrame.java
+C:\\Users\\Kazumi\\Documents\\BenchmarkDePesquisa\\src\\km\\com\\visao\\ResultadoJFrame.java
