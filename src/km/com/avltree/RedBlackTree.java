@@ -1,232 +1,406 @@
 package km.com.avltree;
 
 public class RedBlackTree {
-    
-    public class Node {
-        String key;
-        Node parent;
-        Node left;
-        Node right;
-        int color;
-        
-        Node(String key) {
-            this.key = key;
-        }
-        
-        //IMPRIME A ÁRVORE
-        public String buildAVLTreeString() {
-            StringBuilder treeString = new StringBuilder();
-            buildAVLTreeString(treeString, true, "");
-            return treeString.toString();
-        }   
 
-        private void buildAVLTreeString(StringBuilder treeString, boolean isRight, String indent) {
-            if (right != null) {
-                right.buildAVLTreeString(treeString, true, indent + (isRight ? "        " : " |      "));
-            }
-            treeString.append(indent);
-            if (isRight) {
-                treeString.append(" /");
-            } else {
-                treeString.append(" \\");
-            }
-            treeString.append("----- ");
-            appendNodeValue(treeString);
-            if (left != null) {
-                left.buildAVLTreeString(treeString, false, indent + (isRight ? " |      " : "        "));
-            }
+      private Node root;
+
+      static final boolean RED = false;
+      static final boolean BLACK = true;
+
+        public Node getRoot() {
+            return root;
+        }
+      public Node searchNode(String key) {
+        Node node = root;
+        while (node != null) {
+          if (key.equals(node.data)) {
+            return node;
+          } else if (key.compareTo(node.data)<0) {
+            node = node.left;
+          } else {
+            node = node.right;
+          }
         }
 
-        private void appendNodeValue(StringBuilder treeString) {
-            if (key == null) {
-                treeString.append("<null>\n");
-            } else {
-                treeString.append(key).append('\n');
-            }
-        }
-    }
-    
-    private Node root;
-    private Node TNULL;
+        return null;
+      }
 
-    // Pré-ordem
-    // Percorre a árvore rubro-negra em pré-ordem
-    public void preOrder() {
-        preOrderHelper(this.root);
-    }
+      // -- Insertion ----------------------------------------------------------------------------------
 
-    // Inordem
-    // Percorre a árvore rubro-negra em ordem
-    public void inOrder() {
-        inOrderHelper(this.root);
-    }
+      public void insertNode(String key) {
+        Node node = root;
+        Node parent = null;
 
-    // Pós-ordem
-    // Percorre a árvore rubro-negra em pós-ordem
-    public void postOrder() {
-        postOrderHelper(this.root);
-    }
-
-    // Insere um valor na árvore rubro-negra
-    public void insert(String key) {
-        // Inicializa um novo nó e define seu valor e filhos como nulos
-        Node node = new Node(key);
-        node.parent = null;
-        node.left = TNULL;
-        node.right = TNULL;
-        node.color = 1; // Novos nós são sempre vermelhos
-
-        Node y = null;
-        Node x = this.root;
-
-        // Percorre a árvore para encontrar o local de inserção
-        while (x != TNULL) {
-            y = x;
-            if (node.key.compareTo (x.key)< 0 ) {
-                x = x.left;
-            } else {
-                x = x.right;
-            }
+        // Traverse the tree to the left or right depending on the key
+        while (node != null) {
+          parent = node;
+          if (key.compareTo(node.data)<0) {
+            node = node.left;
+          } else if (key.compareTo(node.data)>0) {
+            node = node.right;
+          } else {
+            throw new IllegalArgumentException("BST already contains a node with key " + key);
+          }
         }
 
-        // Define o pai do novo nó
-        node.parent = y;
-
-        // Se o pai for nulo, o novo nó é a raiz da árvore
-        if (y == null) {
-            root = node;
-        } else if (node.key.compareTo (y.key)> 0 ) {
-            y.left = node;
+        // Insert new node
+        Node newNode = new Node(key);
+        newNode.color = RED;
+        if (parent == null) {
+          root = newNode;
+        } else if (key.compareTo(parent.data)<0) {
+          parent.left = newNode;
         } else {
-            y.right = node;
+          parent.right = newNode;
+        }
+        newNode.parent = parent;
+
+        fixRedBlackPropertiesAfterInsert(newNode);
+      }
+
+      @SuppressWarnings("squid:S125") // Ignore SonarCloud complains about commented code line 70.
+      private void fixRedBlackPropertiesAfterInsert(Node node) {
+        Node parent = node.parent;
+
+        // Case 1: Parent is null, we've reached the root, the end of the recursion
+        if (parent == null) {
+          // Uncomment the following line if you want to enforce black roots (rule 2):
+          // node.color = BLACK;
+          return;
         }
 
-        // Caso de inserção em que a propriedade da árvore rubro-negra pode ser violada
-        if (node.parent == null) {
-            return;
+        // Parent is black --> nothing to do
+        if (parent.color == BLACK) {
+          return;
         }
 
-        // Corrige a árvore
-        fixInsert(node);
-    }
+        // From here on, parent is red
+        Node grandparent = parent.parent;
 
-    // Método auxiliar para percorrer a árvore em pré-ordem
-    // Usado para imprimir a árvore
-    private void preOrderHelper(Node node) {
-        if (node != TNULL) {
-            System.out.print(node.key + " ");
-            preOrderHelper(node.left);
-            preOrderHelper(node.right);
+        // Case 2:
+        // Not having a grandparent means that parent is the root. If we enforce black roots
+        // (rule 2), grandparent will never be null, and the following if-then block can be
+        // removed.
+        if (grandparent == null) {
+          // As this method is only called on red nodes (either on newly inserted ones - or -
+          // recursively on red grandparents), all we have to do is to recolor the root black.
+          parent.color = BLACK;
+          return;
         }
-    }
 
-    // Método auxiliar para percorrer a árvore em ordem
-    private void inOrderHelper(Node node) {
-        if (node != TNULL) {
-            inOrderHelper(node.left);
-            System.out.print(node.key + " ");
-            inOrderHelper(node.right);
+        // Get the uncle (may be null/nil, in which case its color is BLACK)
+        Node uncle = getUncle(parent);
+
+        // Case 3: Uncle is red -> recolor parent, grandparent and uncle
+        if (uncle != null && uncle.color == RED) {
+          parent.color = BLACK;
+          grandparent.color = RED;
+          uncle.color = BLACK;
+
+          // Call recursively for grandparent, which is now red.
+          // It might be root or have a red parent, in which case we need to fix more...
+          fixRedBlackPropertiesAfterInsert(grandparent);
         }
-    }
 
-    // Método auxiliar para percorrer a árvore em pós-ordem
-    private void postOrderHelper(Node node) {
-        if (node != TNULL) {
-            postOrderHelper(node.left);
-            postOrderHelper(node.right);
-            System.out.print(node.key + " ");
+        // Note on performance:
+        // It would be faster to do the uncle color check within the following code. This way
+        // we would avoid checking the grandparent-parent direction twice (once in getUncle()
+        // and once in the following else-if). But for better understanding of the code,
+        // I left the uncle color check as a separate step.
+
+        // Parent is left child of grandparent
+        else if (parent == grandparent.left) {
+          // Case 4a: Uncle is black and node is left->right "inner child" of its grandparent
+          if (node == parent.right) {
+            rotateLeft(parent);
+
+            // Let "parent" point to the new root node of the rotated sub-tree.
+            // It will be recolored in the next step, which we're going to fall-through to.
+            parent = node;
+          }
+
+          // Case 5a: Uncle is black and node is left->left "outer child" of its grandparent
+          rotateRight(grandparent);
+
+          // Recolor original parent and grandparent
+          parent.color = BLACK;
+          grandparent.color = RED;
         }
-    }
 
-    // Corrige a árvore após a inserção de um nó
-    // Realiza rotações e ajustes de cores conforme necessário
-    private void fixInsert(Node k) {
-        Node u;
-        while (k.parent.color == 1) {
-            if (k.parent == k.parent.parent.right) {
-                u = k.parent.parent.left; // Tio
-                if (u.color == 1) {
-                    // Caso 1: O tio também é vermelho
-                    u.color = 0;
-                    k.parent.color = 0;
-                    k.parent.parent.color = 1;
-                    k = k.parent.parent;
-                } else {
-                    if (k == k.parent.left) {
-                        // Caso 2: O tio é preto e o nó é um filho esquerdo
-                        k = k.parent;
-                        rightRotate(k);
-                    }
-                    // Caso 3: O tio é preto e o nó é um filho direito
-                    k.parent.color = 0;
-                    k.parent.parent.color = 1;
-                    leftRotate(k.parent.parent);
-                }
-            } else {
-                u = k.parent.parent.right; // Tio
+        // Parent is right child of grandparent
+        else {
+          // Case 4b: Uncle is black and node is right->left "inner child" of its grandparent
+          if (node == parent.left) {
+            rotateRight(parent);
 
-                if (u.color == 1) {
-                    // Caso 1: O tio também é vermelho
-                    u.color = 0;
-                    k.parent.color = 0;
-                    k.parent.parent.color = 1;
-                    k = k.parent.parent; 
-                } else {
-                    if (k == k.parent.right) {
-                        // Caso 2: O tio é preto e o nó é um filho direito
-                        k = k.parent;
-                        leftRotate(k);
-                    }
-                    // Caso 3: O tio é preto e o nó é um filho esquerdo
-                    k.parent.color = 0;
-                    k.parent.parent.color = 1;
-                    rightRotate(k.parent.parent);
-                }
-            }
-            if (k == root) {
-                break;
-            }
+            // Let "parent" point to the new root node of the rotated sub-tree.
+            // It will be recolored in the next step, which we're going to fall-through to.
+            parent = node;
+          }
+
+          // Case 5b: Uncle is black and node is right->right "outer child" of its grandparent
+          rotateLeft(grandparent);
+
+          // Recolor original parent and grandparent
+          parent.color = BLACK;
+          grandparent.color = RED;
         }
-        root.color = 0;
-    }
+      }
 
-    // Rotação à esquerda em um nó
-    // Atualiza os pais e filhos dos nós envolvidos
-    private void leftRotate(Node x) {
-        Node y = x.right;
-        x.right = y.left;
-        if (y.left != TNULL) {
-            y.left.parent = x;
-        }
-        y.parent = x.parent;
-        if (x.parent == null) {
-            this.root = y;
-        } else if (x == x.parent.left) {
-            x.parent.left = y;
+      private Node getUncle(Node parent) {
+        Node grandparent = parent.parent;
+        if (grandparent.left == parent) {
+          return grandparent.right;
+        } else if (grandparent.right == parent) {
+          return grandparent.left;
         } else {
-            x.parent.right = y;
+          throw new IllegalStateException("Parent is not a child of its grandparent");
         }
-        y.left = x;
-        x.parent = y;
-    }
+      }
 
-    // Rotação à direita em um nó
-    // Atualiza os pais e filhos dos nós envolvidos
-    private void rightRotate(Node x) {
-        Node y = x.left;
-        x.left = y.right;
-        if (y.right != TNULL) {
-            y.right.parent = x;
+      // -- Deletion -----------------------------------------------------------------------------------
+
+      @SuppressWarnings("squid:S2259") // SonarCloud issues an incorrect potential NPE warning
+      public void deleteNode(String key) {
+        Node node = root;
+
+        // Find the node to be deleted
+        while (node != null && !node.data.equals(key)) {
+          // Traverse the tree to the left or right depending on the key
+          if (key.compareTo(node.data)<0) {
+            node = node.left;
+          } else {
+            node = node.right;
+          }
         }
-        y.parent = x.parent;
-        if (x.parent == null) {
-            this.root = y;
-        } else if (x == x.parent.right) {
-            x.parent.right = y;
+
+        // Node not found?
+        if (node == null) {
+          return;
+        }
+
+        // At this point, "node" is the node to be deleted
+
+        // In this variable, we'll store the node at which we're going to start to fix the R-B
+        // properties after deleting a node.
+        Node movedUpNode;
+        boolean deletedNodeColor;
+
+        // Node has zero or one child
+        if (node.left == null || node.right == null) {
+          movedUpNode = deleteNodeWithZeroOrOneChild(node);
+          deletedNodeColor = node.color;
+        }
+
+        // Node has two children
+        else {
+          // Find minimum node of right subtree ("inorder successor" of current node)
+          Node inOrderSuccessor = findMinimum(node.right);
+
+          // Copy inorder successor's data to current node (keep its color!)
+          node.data = inOrderSuccessor.data;
+
+          // Delete inorder successor just as we would delete a node with 0 or 1 child
+          movedUpNode = deleteNodeWithZeroOrOneChild(inOrderSuccessor);
+          deletedNodeColor = inOrderSuccessor.color;
+        }
+
+        if (deletedNodeColor == BLACK) {
+          fixRedBlackPropertiesAfterDelete(movedUpNode);
+
+          // Remove the temporary NIL node
+          if (movedUpNode.getClass() == NilNode.class) {
+            replaceParentsChild(movedUpNode.parent, movedUpNode, null);
+          }
+        }
+      }
+
+      private Node deleteNodeWithZeroOrOneChild(Node node) {
+        // Node has ONLY a left child --> replace by its left child
+        if (node.left != null) {
+          replaceParentsChild(node.parent, node, node.left);
+          return node.left; // moved-up node
+        }
+
+        // Node has ONLY a right child --> replace by its right child
+        else if (node.right != null) {
+          replaceParentsChild(node.parent, node, node.right);
+          return node.right; // moved-up node
+        }
+
+        // Node has no children -->
+        // * node is red --> just remove it
+        // * node is black --> replace it by a temporary NIL node (needed to fix the R-B rules)
+        else {
+          Node newChild = node.color == BLACK ? new NilNode() : null;
+          replaceParentsChild(node.parent, node, newChild);
+          return newChild;
+        }
+      }
+
+      private Node findMinimum(Node node) {
+        while (node.left != null) {
+          node = node.left;
+        }
+        return node;
+      }
+
+      @SuppressWarnings("squid:S125") // Ignore SonarCloud complains about commented code line 256.
+      private void fixRedBlackPropertiesAfterDelete(Node node) {
+        // Case 1: Examined node is root, end of recursion
+        if (node == root) {
+          // Uncomment the following line if you want to enforce black roots (rule 2):
+          // node.color = BLACK;
+          return;
+        }
+
+        Node sibling = getSibling(node);
+
+        // Case 2: Red sibling
+        if (sibling.color == RED) {
+          handleRedSibling(node, sibling);
+          sibling = getSibling(node); // Get new sibling for fall-through to cases 3-6
+        }
+
+        // Cases 3+4: Black sibling with two black children
+        if (isBlack(sibling.left) && isBlack(sibling.right)) {
+          sibling.color = RED;
+
+          // Case 3: Black sibling with two black children + red parent
+          if (node.parent.color == RED) {
+            node.parent.color = BLACK;
+          }
+
+          // Case 4: Black sibling with two black children + black parent
+          else {
+            fixRedBlackPropertiesAfterDelete(node.parent);
+          }
+        }
+
+        // Case 5+6: Black sibling with at least one red child
+        else {
+          handleBlackSiblingWithAtLeastOneRedChild(node, sibling);
+        }
+      }
+
+      private void handleRedSibling(Node node, Node sibling) {
+        // Recolor...
+        sibling.color = BLACK;
+        node.parent.color = RED;
+
+        // ... and rotate
+        if (node == node.parent.left) {
+          rotateLeft(node.parent);
         } else {
-            x.parent.left = y;
+          rotateRight(node.parent);
         }
-        y.right = x;
-        x.parent = y;
-    }
+      }
+
+      private void handleBlackSiblingWithAtLeastOneRedChild(Node node, Node sibling) {
+        boolean nodeIsLeftChild = node == node.parent.left;
+
+        // Case 5: Black sibling with at least one red child + "outer nephew" is black
+        // --> Recolor sibling and its child, and rotate around sibling
+        if (nodeIsLeftChild && isBlack(sibling.right)) {
+          sibling.left.color = BLACK;
+          sibling.color = RED;
+          rotateRight(sibling);
+          sibling = node.parent.right;
+        } else if (!nodeIsLeftChild && isBlack(sibling.left)) {
+          sibling.right.color = BLACK;
+          sibling.color = RED;
+          rotateLeft(sibling);
+          sibling = node.parent.left;
+        }
+
+        // Fall-through to case 6...
+
+        // Case 6: Black sibling with at least one red child + "outer nephew" is red
+        // --> Recolor sibling + parent + sibling's child, and rotate around parent
+        sibling.color = node.parent.color;
+        node.parent.color = BLACK;
+        if (nodeIsLeftChild) {
+          sibling.right.color = BLACK;
+          rotateLeft(node.parent);
+        } else {
+          sibling.left.color = BLACK;
+          rotateRight(node.parent);
+        }
+      }
+
+      private Node getSibling(Node node) {
+        Node parent = node.parent;
+        if (node == parent.left) {
+          return parent.right;
+        } else if (node == parent.right) {
+          return parent.left;
+        } else {
+          throw new IllegalStateException("Parent is not a child of its grandparent");
+        }
+      }
+
+      private boolean isBlack(Node node) {
+        return node == null || node.color == BLACK;
+      }
+
+      private static class NilNode extends Node {
+        private NilNode() {
+          super("");
+          this.color = BLACK;
+        }
+      }
+
+      // -- Helpers for insertion and deletion ---------------------------------------------------------
+
+      private void rotateRight(Node node) {
+        Node parent = node.parent;
+        Node leftChild = node.left;
+
+        node.left = leftChild.right;
+        if (leftChild.right != null) {
+          leftChild.right.parent = node;
+        }
+
+        leftChild.right = node;
+        node.parent = leftChild;
+
+        replaceParentsChild(parent, node, leftChild);
+      }
+
+      private void rotateLeft(Node node) {
+        Node parent = node.parent;
+        Node rightChild = node.right;
+
+        node.right = rightChild.left;
+        if (rightChild.left != null) {
+          rightChild.left.parent = node;
+        }
+
+        rightChild.left = node;
+        node.parent = rightChild;
+
+        replaceParentsChild(parent, node, rightChild);
+      }
+
+      private void replaceParentsChild(Node parent, Node oldChild, Node newChild) {
+        if (parent == null) {
+          root = newChild;
+        } else if (parent.left == oldChild) {
+          parent.left = newChild;
+        } else if (parent.right == oldChild) {
+          parent.right = newChild;
+        } else {
+          throw new IllegalStateException("Node is not a child of its parent");
+        }
+
+        if (newChild != null) {
+          newChild.parent = parent;
+        }
+      }
+
+      // -- For toString() -----------------------------------------------------------------------------
+
+    //  protected void appendNodeToString(Node node, StringBuilder builder) {
+    //    builder.append(node.data).append(node.color == RED ? "[R]" : "[B]");
+    //  }
 }

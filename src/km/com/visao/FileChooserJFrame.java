@@ -8,6 +8,7 @@ import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import km.com.avltree.AVLTree;
+import km.com.avltree.RedBlackTree;
 import km.com.avltree.Tree;
 import km.com.leitura.BuscaBinaria;
 import km.com.leitura.Hashmap;
@@ -184,6 +185,7 @@ public class FileChooserJFrame extends javax.swing.JFrame {
             ArrayList<String> listaBinaria = new ArrayList();
             AVLTree avltree = new AVLTree();
             Tree tree = new Tree();
+            RedBlackTree rbtree = new RedBlackTree();
             BuscaBinaria buscaBi = new BuscaBinaria();
             lista = LeituraArquivo.leituraDoArquivo(selectedFile.toString());
             HashMap<String, Integer> hmap = Hashmap.criaHashmap(lista);
@@ -214,7 +216,15 @@ public class FileChooserJFrame extends javax.swing.JFrame {
             long tempoAvl2 = System.nanoTime();
             contadorAvl = avltree.getContador();
             long tempoAVL = tempoAvl2-tempoAvl;
-
+            
+            //testeRBTree
+            for(int i=0; i<lista.size();i++){
+                String palavra = lista.get(i);
+                if(rbtree.searchNode(palavra) == null){
+                    rbtree.insertNode(palavra);
+                }
+            }
+            System.out.println(rbtree.getRoot().buildAVLTreeString());
 
             //Gerando contador da arvore binaria e populando a mesma
             int contadorArvore = 0;
