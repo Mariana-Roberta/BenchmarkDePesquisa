@@ -123,12 +123,14 @@ public class FileChooserJFrame extends javax.swing.JFrame {
 
         jTextFieldOrdem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(29, 53, 87));
         jLabel5.setText("Ordem da Arvore B");
 
+        jButtonOrdem.setBackground(new java.awt.Color(68, 122, 155));
+        jButtonOrdem.setFont(new java.awt.Font("Microsoft YaHei UI", 1, 12)); // NOI18N
         jButtonOrdem.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonOrdem.setText("Confirmar");
+        jButtonOrdem.setText("CONFIRMAR");
         jButtonOrdem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonOrdemActionPerformed(evt);
@@ -153,15 +155,15 @@ public class FileChooserJFrame extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(131, 131, 131)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextFieldOrdem)
-                    .addComponent(jButtonOrdem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(65, 65, 65)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(139, Short.MAX_VALUE))
+                    .addComponent(jButtonOrdem, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -262,8 +264,6 @@ public class FileChooserJFrame extends javax.swing.JFrame {
             long tempoRBT = tempoRBT2 - tempoRBT1;
             contadorRBT = rbtree.getContador();
             
-            System.out.println(rbtree.getRoot().buildAVLTreeString());
-            
             //BTree
             int contadorBT = 0;
             long tempoBT1 = System.nanoTime();
@@ -276,8 +276,8 @@ public class FileChooserJFrame extends javax.swing.JFrame {
             long tempoBT2 = System.nanoTime();
             //Contador de tempo e verificações
             long tempoBT = tempoBT2 - tempoBT1;
-            contadorRBT = rbtree.getContador();
-            btree.printTree();
+            contadorBT = btree.getContador();
+            //btree.printTree();
             
             //Gerando contador da arvore binaria e populando a mesma
             int contadorArvore = 0;
@@ -292,12 +292,12 @@ public class FileChooserJFrame extends javax.swing.JFrame {
             contadorArvore +=  tree.getContador();
             long tempoBinaria = tempoArvore2 - tempoArvore;
             
-            jButtonOrdem.setEnabled(true);
-            jTextFieldOrdem.setEditable(true);
-            
-            ResultadoJFrame resultadoJFrame = new ResultadoJFrame(lista, avltree, tree, hmap,
+            ResultadoJFrame resultadoJFrame = new ResultadoJFrame(lista, avltree, tree, rbtree, btree, hmap,
                     contadorAvl, contadorArvore, contadorBinario, contadorRBT, contadorBT, tempoAVL, tempoBinaria, tempoBuscaBi, tempoRBT, tempoBT);
             resultadoJFrame.setVisible(true);
+            jTextFieldOrdem.setText("");
+            jTextFieldOrdem.setEnabled(true);
+            jButtonOrdem.setEnabled(true);
 
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());

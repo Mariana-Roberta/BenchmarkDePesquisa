@@ -217,22 +217,25 @@ public class BTree {
         }
         node.childPointers.remove(index + 1);
     }
+    
+    public String printTree() {
+    return printTree(root, "", true, new StringBuilder()).toString();
+}
 
-    public void printTree(TreeNode node, String prefix, boolean isLeft) {
-        if (node != null) {
-            System.out.println(prefix + (isLeft ? "├── " : "└── ") + node.keys);
-            for (int i = 0; i < node.childPointers.size() - 1; i++) {
-                printTree(node.childPointers.get(i), prefix + (isLeft ? "│   " : "    "), true);
-            }
-            if (node.childPointers.size() > 0) {
-                printTree(node.childPointers.get(node.childPointers.size() - 1), prefix + (isLeft ? "│   " : "    "), false);
-            }
+private StringBuilder printTree(TreeNode node, String prefix, boolean isLeft, StringBuilder result) {
+    if (node != null) {
+        result.append(prefix).append(isLeft ? "├── " : "└── ").append(node.keys).append("\n");
+
+        for (int i = 0; i < node.childPointers.size() - 1; i++) {
+            printTree(node.childPointers.get(i), prefix + (isLeft ? "│   " : "    "), true, result);
+        }
+        if (node.childPointers.size() > 0) {
+            printTree(node.childPointers.get(node.childPointers.size() - 1), prefix + (isLeft ? "│   " : "    "), false, result);
         }
     }
+    return result;
+}
 
-    public void printTree() {
-        printTree(root, "", true);
-    }
 
 //    public static void main(String[] args) {
 //        BTree bTree = new BTree(4); // Ordem da árvore B igual a 3
