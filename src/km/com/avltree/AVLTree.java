@@ -47,7 +47,7 @@ public class AVLTree {
     }
 
     private Node root;
-    int contador = 0;
+    private int contador = 0;
     
     public int getContador(){
         return contador;
@@ -86,7 +86,6 @@ public class AVLTree {
     }
 
     private Node insert(Node node, String key) {
-        contador++;
         if (node == null) {
             Node n = new Node(key);
             return n;
@@ -131,7 +130,6 @@ public class AVLTree {
 
     private Node rebalance(Node z) {
         updateHeight(z);
-        contador++;
         int balance = getBalance(z);
         if (balance > 1) {
             if (height(z.right.right) > height(z.right.left)) {
