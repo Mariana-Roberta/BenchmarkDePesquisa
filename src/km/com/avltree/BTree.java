@@ -105,7 +105,7 @@ public class BTree {
         while (i < node.keys.size() && key.compareTo(node.keys.get(i)) > 0) {
             i++;
         }
-        contador = i;
+        contador += i;
         if (i < node.keys.size() && key.equals(node.keys.get(i))) {
             return true;
         } else if (node.isLeaf) {
