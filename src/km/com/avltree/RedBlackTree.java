@@ -6,6 +6,15 @@ public class RedBlackTree {
 
       static final boolean RED = false;
       static final boolean BLACK = true;
+      int contador = 0;
+
+    public int getContador() {
+        return contador;
+    }
+
+    public void setContador(int contador) {
+        this.contador = contador;
+    }
 
         public Node getRoot() {
             return root;
@@ -13,15 +22,15 @@ public class RedBlackTree {
       public Node searchNode(String key) {
         Node node = root;
         while (node != null) {
-          if (key.equals(node.data)) {
-            return node;
-          } else if (key.compareTo(node.data)<0) {
-            node = node.left;
-          } else {
-            node = node.right;
-          }
+            contador++;
+            if (key.equals(node.data)) {
+                return node;
+            } else if (key.compareTo(node.data)<0) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
         }
-
         return null;
       }
 

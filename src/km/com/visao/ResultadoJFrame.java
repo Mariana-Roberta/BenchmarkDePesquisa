@@ -19,7 +19,7 @@ public class ResultadoJFrame extends javax.swing.JFrame {
     }
     
     public ResultadoJFrame(ArrayList lista,AVLTree avltree, Tree tree, HashMap hmap, int contadorAVL,
-            int contadorArvore, int contadorBinario, long tempoAVL, long tempoBinaria, long tempoBuscaBi) {
+            int contadorArvore, int contadorBinario, int contadorRBT, int contadorBT, long tempoAVL, long tempoBinaria, long tempoBuscaBi, long tempoRBT,long tempoBT) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
